@@ -1,0 +1,5 @@
+tmp/
+.scrapy/
+
+*.pyc
+__pycache__/
