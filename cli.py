@@ -1,4 +1,5 @@
 import os
+import sys
 import uuid
 import json
 # import tempfile
@@ -25,6 +26,10 @@ def cli(search, force_update):
 
         sp.check_output(['scrapy', 'crawl', 'bing', '--nolog', '-a', 'search={}'.format(search), '-o', filename])
 
+    if os.path.getsize(filename) == 0:
+        click.secho('Nothing Found', fg='yellow')
+        sys.exit()
+
     with open(filename) as f:
         try:
             res = json.loads(f.read())[-1]
@@ -32,7 +37,7 @@ def cli(search, force_update):
                 click.secho('\n%s:' % LABEL_CHOICES[key], fg='green')
                 click.echo(value)
         except Exception as e:
-
+            click.secho(filename)
             click.secho(e, fg='red')
 
 
